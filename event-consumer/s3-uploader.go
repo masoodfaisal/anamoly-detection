@@ -9,15 +9,16 @@ import (
 	"gocv.io/x/gocv"
 	"log"
 	"math/rand"
+	"os"
 	"time"
 )
 
 func PublishAnamoly(img gocv.Mat) {
 
-	endpoint := "play.min.io"
-	accessKeyID := ""
-	secretAccessKey := ""
-	useSSL := false
+	endpoint := os.Getenv("MINIO_SERVER")
+	accessKeyID := os.Getenv("MINIO_USER")
+	secretAccessKey := os.Getenv("MINIO_PASSWORD")
+	useSSL := true
 
 	// Initialize minio client object.
 	minioClient, err := minio.New(endpoint, &minio.Options{

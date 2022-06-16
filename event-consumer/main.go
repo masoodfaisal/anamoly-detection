@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"os"
+	"strconv"
 )
 
 func main() {
@@ -20,8 +21,6 @@ func main() {
 	sasalusername := os.Getenv("SASL_USERNAME")
 	salpassword := os.Getenv("SASL_PASSWORD")
 
-	kafkabroker = "fm-rocks-calabl-klg-hu---arkg.bf2.kafka.rhcloud.com:443"
-	groupid = "imageclassification"
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": kafkabroker,
 		"group.id":          groupid,
@@ -38,7 +37,8 @@ func main() {
 
 	err = c.SubscribeTopics(topics, nil)
 	var data []byte
-	semaphore := make(chan int, 100)
+	parallelinference, _ := strconv.Atoi(os.Getenv("PARALLEL_INFERENCE"))
+	semaphore := make(chan int, parallelinference)
 	run := true
 	for run == true {
 		ev := c.Poll(0)

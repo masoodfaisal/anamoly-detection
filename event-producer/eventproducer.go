@@ -26,7 +26,6 @@ func initKafka() (*kafka.Producer, string, error) {
 	//	"client.id": hostname,
 	//	"acks":      "0"})
 
-	kafkabroker = "fm-rocks-calabl-klg-hu---arkg.bf2.kafka.rhcloud.com:443"
 	p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": kafkabroker,
 		"client.id":         hostname,
 		"acks":              "1",

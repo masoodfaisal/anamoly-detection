@@ -45,7 +45,7 @@ type seldonpayload struct {
 //var skipcounter = 0
 
 func PerformInference(imagedata []byte) {
-	println("Inferencing ....")
+	println("\nInferencing ....")
 	img, err := gocv.IMDecode(imagedata, gocv.IMReadUnchanged)
 	if err != nil {
 		fmt.Printf("Exitting .. Failed to decode image: %s\n", err)
@@ -81,12 +81,12 @@ func postpayload(sp *seldonpayload) bool {
 	// 	println(json)
 	requestBody := bytes.NewBuffer(json)
 	response, _ := http.Post("http://model-1-pred-demo-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/api/v1.0/predictions", "application/json", requestBody)
-	fmt.Printf(response.Status)
+
 	responsebody, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-
+	fmt.Printf(response.Status)
 	body := string(responsebody)
 	if strings.Contains(body, "Person") {
 		fmt.Printf("\nPERSON\n")
