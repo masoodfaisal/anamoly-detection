@@ -1,0 +1,105 @@
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"gocv.io/x/gocv"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+)
+
+//seldon json payload
+/*{
+"data": {
+	"names": [
+"gender",
+
+],
+"ndarray": [
+	[
+		[]
+
+	]
+	       ]
+		}
+}
+*/
+type Data struct {
+	Names   []string           `json:"names"`
+	Ndarray [256][256][3]uint8 `json:"ndarray"`
+}
+
+type seldonpayload struct {
+	Data `json:"data"`
+}
+
+//var (
+//err   error
+//frame *gocv.NativeByteBuffer
+//)
+
+//var skipcounter = 0
+
+func PerformInference(imagedata []byte) {
+	println("Inferencing ....")
+	img, err := gocv.IMDecode(imagedata, gocv.IMReadUnchanged)
+	if err != nil {
+		fmt.Printf("Exitting .. Failed to decode image: %s\n", err)
+		os.Exit(1)
+	}
+	//skipcounter++
+	//gocv.IMWrite("/tmp/"+strconv.Itoa(skipcounter)+".jpg", img)
+	//fmt.Printf("size: %d x %d with %d channels \n", img.Rows(), img.Cols(), img.Channels())
+
+	var imgarray [256][256][3]uint8
+	bgr := gocv.Split(img)
+	for i := 0; i < 256; i++ {
+		for j := 0; j < 256; j++ {
+			imgarray[i][j][0] = bgr[2].GetUCharAt(i, j)
+			imgarray[i][j][1] = bgr[1].GetUCharAt(i, j)
+			imgarray[i][j][2] = bgr[0].GetUCharAt(i, j)
+		}
+	}
+
+	//fmt.Println(imgarray)
+
+	// 	println("\n)))))))))))))))\n\n\n")
+
+	sp := newSeldonpayload(&Data{Names: []string{"image"}, Ndarray: imgarray})
+	anamoly := postpayload(sp)
+	if anamoly == true {
+		PublishAnamoly(img)
+	}
+}
+
+func postpayload(sp *seldonpayload) bool {
+	json, _ := json.Marshal(sp)
+	// 	println(json)
+	requestBody := bytes.NewBuffer(json)
+	response, _ := http.Post("http://model-1-pred-demo-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/api/v1.0/predictions", "application/json", requestBody)
+	fmt.Printf(response.Status)
+	responsebody, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
+	body := string(responsebody)
+	if strings.Contains(body, "Person") {
+		fmt.Printf("\nPERSON\n")
+	} else if strings.Contains(body, "Background") {
+		fmt.Printf("\nBACKGROUND\n")
+	} else if strings.Contains(body, "MidFinger") {
+		fmt.Printf("\nMIDFINGER\n")
+		return true
+	}
+
+	return false
+
+}
+func newSeldonpayload(seldondata *Data) *seldonpayload {
+	return &seldonpayload{Data: *seldondata}
+}

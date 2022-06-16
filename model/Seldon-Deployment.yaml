@@ -1,0 +1,151 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"machinelearning.seldon.io/v1","kind":"SeldonDeployment","metadata":{"annotations":{},"labels":{"app":"seldon"},"name":"model-1","namespace":"fmv3"},"spec":{"annotations":{"deployment_version":"1","project_name":"pred-demo"},"name":"pred-demo-spec","predictors":[{"annotations":{"predictor_version":"1","seldon.io/svc-name":"model-1-pred-demo","team":"opendatahub"},"componentSpecs":[{"hpaSpec":{"maxReplicas":5,"metrics":[{"resource":{"name":"cpu","targetAverageUtilization":80},"type":"Resource"}],"minReplicas":1},"spec":{"containers":[{"env":[{"name":"MODEL_NAME","value":"Predictor"},{"name":"SERVICE_TYPE","value":"MODEL"},{"name":"GRPC_PORT","value":"5007"},{"name":"METRICS_PORT","value":"6007"},{"name":"HTTP_PORT","value":"9000"}],"image":"image-registry.openshift-image-registry.svc:5000/fmv3/seldon-model-pred-demo-v1","imagePullPolicy":"Always","name":"pred-demopredictor"}]}}],"graph":{"endpoint":{"service_host":"localhost","service_port":9000,"type":"REST"},"name":"pred-demopredictor","type":"MODEL"},"labels":{"team":"opendatahub","version":"predictor"},"name":"predictor","replicas":1}]}}
+  resourceVersion: '90387874'
+  name: model-1
+  uid: 2b1fede5-831d-44e4-a254-42be11953ccb
+  creationTimestamp: '2022-05-26T23:44:37Z'
+  generation: 2
+  managedFields:
+    - apiVersion: machinelearning.seldon.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:app': {}
+        'f:spec':
+          .: {}
+          'f:annotations':
+            .: {}
+            'f:deployment_version': {}
+            'f:project_name': {}
+          'f:name': {}
+      manager: Mozilla
+      operation: Update
+      time: '2022-05-26T23:44:37Z'
+    - apiVersion: machinelearning.seldon.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          .: {}
+          'f:address':
+            .: {}
+            'f:url': {}
+          'f:conditions': {}
+          'f:deploymentStatus':
+            .: {}
+            'f:model-1-predictor-0-pred-demopredictor':
+              .: {}
+              'f:availableReplicas': {}
+              'f:replicas': {}
+          'f:replicas': {}
+          'f:state': {}
+      manager: manager
+      operation: Update
+      subresource: status
+      time: '2022-05-26T23:45:03Z'
+    - apiVersion: machinelearning.seldon.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:kubectl.kubernetes.io/last-applied-configuration': {}
+        'f:spec':
+          'f:predictors': {}
+      manager: oc-3.11
+      operation: Update
+      time: '2022-05-27T02:17:27Z'
+  namespace: fmv3
+  labels:
+    app: seldon
+spec:
+  annotations:
+    deployment_version: '1'
+    project_name: pred-demo
+  name: pred-demo-spec
+  predictors:
+    - annotations:
+        predictor_version: '1'
+        seldon.io/svc-name: model-1-pred-demo
+        team: opendatahub
+      componentSpecs:
+        - hpaSpec:
+            maxReplicas: 5
+            metrics:
+              - resource:
+                  name: cpu
+                  targetAverageUtilization: 80
+                type: Resource
+            minReplicas: 1
+          spec:
+            containers:
+              - env:
+                  - name: MODEL_NAME
+                    value: Predictor
+                  - name: SERVICE_TYPE
+                    value: MODEL
+                  - name: GRPC_PORT
+                    value: '5007'
+                  - name: METRICS_PORT
+                    value: '6007'
+                  - name: HTTP_PORT
+                    value: '9000'
+                image: >-
+                  image-registry.openshift-image-registry.svc:5000/fmv3/seldon-model-pred-demo-v1
+                imagePullPolicy: Always
+                name: pred-demopredictor
+      graph:
+        endpoint:
+          service_host: localhost
+          service_port: 9000
+          type: REST
+        name: pred-demopredictor
+        type: MODEL
+      labels:
+        team: opendatahub
+        version: predictor
+      name: predictor
+      replicas: 1
+status:
+  address:
+    url: 'http://model-1-pred-demo.fmv3.svc.cluster.local:8000/api/v1.0/predictions'
+  conditions:
+    - lastTransitionTime: '2022-05-26T23:45:03Z'
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: DeploymentsReady
+    - lastTransitionTime: '2022-05-26T23:44:38Z'
+      reason: All HPAs resources ready
+      status: 'True'
+      type: HpasReady
+    - lastTransitionTime: '2022-05-26T23:44:37Z'
+      reason: No KEDA resources defined
+      status: 'True'
+      type: KedaReady
+    - lastTransitionTime: '2022-05-26T23:44:37Z'
+      reason: No PDBs defined
+      status: 'True'
+      type: PdbsReady
+    - lastTransitionTime: '2022-05-27T02:18:38Z'
+      status: 'True'
+      type: Ready
+    - lastTransitionTime: '2022-05-27T02:18:38Z'
+      reason: All services created
+      status: 'True'
+      type: ServicesReady
+    - lastTransitionTime: '2022-05-26T23:45:03Z'
+      reason: No VirtualServices defined
+      status: 'True'
+      type: istioVirtualServicesReady
+  deploymentStatus:
+    model-1-predictor-0-pred-demopredictor:
+      availableReplicas: 1
+      replicas: 1
+  replicas: 1
+  state: Available
