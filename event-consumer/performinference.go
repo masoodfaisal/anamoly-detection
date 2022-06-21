@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"gocv.io/x/gocv"
 	"io/ioutil"
@@ -70,13 +71,11 @@ func PerformInference(imagedata []byte) {
 	// 	println("\n)))))))))))))))\n\n\n")
 
 	sp := newSeldonpayload(&Data{Names: []string{"image"}, Ndarray: imgarray})
-	anamoly := postpayload(sp)
-	if anamoly == true {
-		PublishAnamoly(img)
-	}
+	classification, err := postpayload(sp)
+	go RecordClassification(img, classification)
 }
 
-func postpayload(sp *seldonpayload) bool {
+func postpayload(sp *seldonpayload) (string, error) {
 	json, _ := json.Marshal(sp)
 	// 	println(json)
 	requestBody := bytes.NewBuffer(json)
@@ -90,14 +89,16 @@ func postpayload(sp *seldonpayload) bool {
 	body := string(responsebody)
 	if strings.Contains(body, "Person") {
 		fmt.Printf("\nPERSON\n")
+		return "Person", nil
 	} else if strings.Contains(body, "Background") {
 		fmt.Printf("\nBACKGROUND\n")
+		return "Background", nil
 	} else if strings.Contains(body, "MidFinger") {
 		fmt.Printf("\nMIDFINGER\n")
-		return true
+		return "MidFinger", nil
 	}
 
-	return false
+	return "", errors.New("no classification found")
 
 }
 func newSeldonpayload(seldondata *Data) *seldonpayload {
