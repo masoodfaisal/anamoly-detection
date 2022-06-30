@@ -1,0 +1,73 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: image-predictor-consumer
+  labels:
+    app: image-predictor-consumer
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: image-predictor-consumer
+  template:
+    metadata:
+      labels:
+        app: image-predictor-consumer
+    spec:
+      containers:
+        - resources: {}
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 10
+          terminationMessagePath: /dev/termination-log
+          name: image-predictor-consumer
+          livenessProbe:
+            exec:
+              command:
+              - cat
+              - /tmp
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 10
+          env:
+            - name: "MINIO_USER"
+              value: "minio"
+            - name: "MINIO_PASSWORD"
+              value: "minio123"
+            - name: "SASL_USERNAME"
+              value: "srvc-acct-3d327ef4-75fa-4584-8903-d99c9d7522c9"
+            - name: "SASL_PASSWORD"
+              value: "8cb9c372-2eef-4667-b014-da9d55b3c980"
+            - name: "KAFKA_BROKER"
+              value: "fm-rocks-cauggfmik--rt--t-sma.bf2.kafka.rhcloud.com:443"
+            - name: "GROUP_ID"
+              value: "imageclassification"
+            - name: "MINIO_SERVER"
+              value: "minio-ml-workshop-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com"
+            - name: "PARALLEL_INFERENCE"
+              value: "10"
+            - name: "PROMETHEUS_SERVER"
+              value: "NA"
+          imagePullPolicy: Always
+          image: quay.io/ml-aml-workshop/image-prediction-consumer:0.0.1
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 20
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

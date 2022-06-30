@@ -7,6 +7,17 @@ import (
 	"strconv"
 )
 
+//Time        time.Time
+
+//type MaintainenceRecord struct {
+//	Description string `json:description`
+//	TotalCount  uint64 `json:totalCount`
+//}
+
+//type MaintainenceRecords struct {
+//	maintainenceRecords []MaintainenceRecord
+//}
+
 func main() {
 
 	topics := []string{"video-stream"}

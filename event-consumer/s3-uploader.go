@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"github.com/minio/minio-go/v7"
@@ -12,21 +11,28 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
+	"strings"
+	"sync/atomic"
 	"time"
 )
 
 func RecordClassification(img gocv.Mat, classification string) {
 
-	publishToPrometheus(img, classification)
-	//publishToS3(img)
+	//publishToPrometheus(img, classification)
+	publishToS3(img, classification)
 
 }
 
-func publishToS3(img gocv.Mat) {
+var background_count_s3 int32 = 0
+var person_count_s3 int32 = 0
+var midfinger_count_s3 int32 = 0
+
+func publishToS3(img gocv.Mat, classification string) {
 	endpoint := os.Getenv("MINIO_SERVER")
 	accessKeyID := os.Getenv("MINIO_USER")
 	secretAccessKey := os.Getenv("MINIO_PASSWORD")
-	useSSL := true
+	useSSL := false
 
 	// Initialize minio client object.
 	minioClient, err := minio.New(endpoint, &minio.Options{
@@ -37,17 +43,39 @@ func publishToS3(img gocv.Mat) {
 		log.Fatalln(err)
 	}
 
-	file := bytes.NewBufferString("ANAMOLY")
+	//var file *bytes.Buffer
+	var file int32
 
-	_, err = minioClient.PutObject(context.Background(), "image-prediction", randomString(16),
-		file, int64(file.Len()),
-		minio.PutObjectOptions{ContentType: "application/octet-stream"})
+	if classification == "Person" {
+		atomic.AddInt32(&person_count_s3, 1)
+		file = person_count_s3
+	} else if classification == "Background" {
+		atomic.AddInt32(&background_count_s3, 1)
+		file = background_count_s3
+	} else if classification == "MidFinger" {
+		atomic.AddInt32(&midfinger_count_s3, 1)
+		file = midfinger_count_s3
+	}
+	println(strconv.Itoa(int(file)))
+	println("file is formed")
+	//put update data
+	filereader := strings.NewReader(strconv.Itoa(int(file)))
+	_, err = minioClient.PutObject(context.Background(), "image-prediction", classification+".txt",
+		filereader, int64(filereader.Len()),
+		minio.PutObjectOptions{ContentType: "text/plain"})
+
+	//put an image
+	//file = bytes.NewBufferString()
+	//_, err = minioClient.PutObject(context.Background(), "image-prediction", randomString(16),
+	//	file, int64(file.Len()),
+	//	minio.PutObjectOptions{ContentType: "application/octet-stream"})
 
 	//gocv.IMWrite("/tmp/dyn.jpg", img)
 	//_, err = minioClient.FPutObject(context.Background(), "image-prediction", "file",
 	//	"a.jpg", minio.PutObjectOptions{ContentType: "application/octet-stream"})
 
 	if err != nil {
+		println("Error PutObject")
 		println(err.Error())
 	}
 }
