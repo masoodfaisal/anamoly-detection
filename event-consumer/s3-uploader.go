@@ -56,8 +56,8 @@ func publishToS3(img gocv.Mat, classification string) {
 		atomic.AddInt32(&midfinger_count_s3, 1)
 		file = midfinger_count_s3
 	}
-	println(strconv.Itoa(int(file)))
-	println("file is formed")
+	//println(strconv.Itoa(int(file)))
+	//println("file is formed")
 	//put update data
 	filereader := strings.NewReader(strconv.Itoa(int(file)))
 	_, err = minioClient.PutObject(context.Background(), "image-prediction", classification+".txt",
