@@ -19,3 +19,18 @@ Data Science team use the platform to build (and re-train) and deploy the model 
 - Create a topic named vide-streams in RH AMQ Streams online and create service account for SASL Authentication
 - Run the program in the event-producer folder (docker version is also available), to capture the video feed from your laptop (mimicing the edge device)
 - Open the JS file in local browser to see the feed results
+
+# Env Settings
+```bash
+
+export MINIO_USER="minio"
+export MINIO_PASSWORD=""
+export SASL_USERNAME=""
+export SASL_PASSWORD=""
+export KAFKA_BROKER=""
+export GROUP_ID="imageclassification"
+export MINIO_SERVER=""
+export PARALLEL_INFERENCE=15
+export PROMETHEUS_SERVER=localhost:9090
+
+```
