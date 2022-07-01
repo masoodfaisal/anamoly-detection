@@ -9,6 +9,9 @@ The application first collects data from the edge devices such as cameras and se
 Data Science team use the platform to build (and re-train) and deploy the model in self-serving fashion.
 ![img.png](img.png)
 
+# Technical Architecture
+![img_1.png](img_1.png)
+
 # How to run this lab
 - Have an OCP cluster using RHPDS
 - Run the deployments in the deploy folder to create Minio and model inferencing alongwith the consumer component. 
