@@ -5,7 +5,7 @@ metadata:
   labels:
     app: image-predictor-consumer
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: image-predictor-consumer
@@ -15,7 +15,10 @@ spec:
         app: image-predictor-consumer
     spec:
       containers:
-        - resources: {}
+        - resources:
+            requests:
+              cpu: '1'
+              memory: 2Gi
           readinessProbe:
             exec:
               command:
