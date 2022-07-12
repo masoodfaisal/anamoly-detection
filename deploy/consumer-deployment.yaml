@@ -22,8 +22,8 @@ spec:
           readinessProbe:
             exec:
               command:
-                - cat
-                - /go
+                - ls
+                - /app/main
             initialDelaySeconds: 10
             timeoutSeconds: 1
             periodSeconds: 5
@@ -34,8 +34,8 @@ spec:
           livenessProbe:
             exec:
               command:
-              - cat
-              - /go
+                - ls
+                - /app/main
             initialDelaySeconds: 10
             timeoutSeconds: 1
             periodSeconds: 5
