@@ -23,7 +23,7 @@ spec:
             exec:
               command:
                 - cat
-                - /tmp
+                - /go
             initialDelaySeconds: 10
             timeoutSeconds: 1
             periodSeconds: 5
