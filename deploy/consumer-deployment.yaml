@@ -60,7 +60,7 @@ spec:
             - name: "MODEL_URL"
               value: ""
           imagePullPolicy: Always
-          image: quay.io/ml-aml-workshop/image-prediction-consumer:0.0.1
+          image: quay.io/ml-aml-workshop/image-prediction-consumer:0.0.2
       restartPolicy: Always
       terminationGracePeriodSeconds: 20
       dnsPolicy: ClusterFirst
