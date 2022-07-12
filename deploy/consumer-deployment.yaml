@@ -57,6 +57,8 @@ spec:
               value: "10"
             - name: "PROMETHEUS_SERVER"
               value: "NA"
+            - name: "MODEL_URL"
+              value: ""
           imagePullPolicy: Always
           image: quay.io/ml-aml-workshop/image-prediction-consumer:0.0.1
       restartPolicy: Always
