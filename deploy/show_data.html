@@ -4,17 +4,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script>
+    const minio_location = 'http://minio-ml-workshop-pred-main.apps.rosa-g5xqz.w0wh.p1.openshiftapps.com/image-prediction/'
     function fetchData(){
         $.ajax({
-            url: 'http://minio-ml-workshop-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/image-prediction/MidFinger.txt',
+            url: minio_location +  'MidFinger.txt',
             dataType: 'text',
         }).done(successFunctionOne);
         $.ajax({
-            url: 'http://minio-ml-workshop-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/image-prediction/Person.txt',
+            url: minio_location +  'Person.txt',
             dataType: 'text',
         }).done(successFunctionPerson);
         $.ajax({
-            url: 'http://minio-ml-workshop-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/image-prediction/Background.txt',
+            url: minio_location +  'Background.txt',
             dataType: 'text',
         }).done(successFunctionBackground);
 

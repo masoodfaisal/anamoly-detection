@@ -79,7 +79,10 @@ func postpayload(sp *seldonpayload) (string, error) {
 	json, _ := json.Marshal(sp)
 	// 	println(json)
 	requestBody := bytes.NewBuffer(json)
-	response, _ := http.Post("http://model-1-pred-demo-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/api/v1.0/predictions", "application/json", requestBody)
+
+	//"http://model-1-pred-demo-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/api/v1.0/predictions"
+	modelUrl := os.Getenv("MODEL_URL")
+	response, _ := http.Post(modelUrl, "application/json", requestBody)
 
 	responsebody, err := ioutil.ReadAll(response.Body)
 	if err != nil {

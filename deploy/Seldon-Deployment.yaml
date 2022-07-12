@@ -16,13 +16,13 @@ spec:
         team: opendatahub
       componentSpecs:
         - hpaSpec:
-            maxReplicas: 10
+            maxReplicas: 15
             metrics:
               - resource:
                   name: cpu
                   targetAverageUtilization: 80
                 type: Resource
-            minReplicas: 5
+            minReplicas: 10
           spec:
             containers:
               - env:
@@ -36,9 +36,7 @@ spec:
                     value: '6007'
                   - name: HTTP_PORT
                     value: '9000'
-                image: >-
-                  quay.io/ml-aml-workshop/image-classification:0.0.1 
-
+                image: 'quay.io/ml-aml-workshop/image-classification:0.0.1'
                 imagePullPolicy: Always
                 name: pred-demopredictor
       graph:
