@@ -41,3 +41,6 @@ export MODEL_URL="http://model-1-pred-demo-fmv3.apps.dbs-indo-1.apac-1.rht-labs.
 brew install go
 brew isntall opencv
 ```
+
+# Warning
+Make sure that the image-prediction bucket is public
