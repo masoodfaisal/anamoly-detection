@@ -4,7 +4,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script>
-    const minio_location = 'http://minio-ml-workshop-pred-main.apps.rosa-g5xqz.w0wh.p1.openshiftapps.com/image-prediction/'
+    const minio_location = 'http://minio-ml-workshop-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/image-prediction/'
+    var midfinger = 0
+    var background = 0
+    var person = 0
     function fetchData(){
         $.ajax({
             url: minio_location +  'MidFinger.txt',
@@ -23,12 +26,29 @@
     function successFunctionOne(data){
         // console.log(data)
         $('#one').empty().append(data)
+        if(midfinger != data){
+            //update as it is detected
+            $('#heading').empty().append("One")
+        }
+        midfinger = data
     }
     function successFunctionPerson(data){
         $('#person').empty().append(data)
+        if(person != data){
+            //update as it is detected
+            $('#heading').empty().append("Person")
+        }
+        person = data
+
     }
     function successFunctionBackground(data){
         $('#background').empty().append(data)
+        if(background != data){
+            //update as it is detected
+            $('#heading').empty().append("Background")
+        }
+        background = data
+
     }
 
 
@@ -101,9 +121,7 @@
 
 <body>
 <div class="container">
-    <div class="heading">
-        Counting Upto the Limit
-    </div>
+    <div class="heading" id="heading"></div>
     <div class="counter-container">
         <div class="counter">
 <!--            <img src="./icons/iconmonstr-time-19.svg" alt="one" srcset="" class="icon">-->
