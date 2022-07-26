@@ -39,8 +39,8 @@ rhoas kafka topic create --name ${TOPIC_NAME}
 
 rhoas service-account create --file-format json --short-description="${KAFKA_NAME}-service-account"
 
-CLIENT_ID=$(cat credentials.json | jq '.clientID')
-CLIENT_SECRET=$(cat credentials.json | jq '.clientSecret')
+CLIENT_ID=$(cat credentials.json | jq  --raw-output '.clientID')
+CLIENT_SECRET=$(cat credentials.json | jq  --raw-output '.clientSecret')
 
 echo "$CLIENT_ID"
 echo "$CLIENT_SECRET"
@@ -49,3 +49,4 @@ echo "$CLIENT_SECRET"
 rhoas service-account list | grep "${KAFKA_NAME}-service-account"
 
 rhoas kafka acl grant-access --consumer --producer --service-account "${CLIENT_ID}" --topic-prefix '*'  --group all
+
