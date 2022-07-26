@@ -6,6 +6,7 @@
 #curl -o- https://raw.githubusercontent.com/redhat-developer/app-services-cli/main/scripts/install.sh | bash
 
 #export PATH
+brew install jq
 
 KAFKA_NAME='fm-rocks-v3'
 TOPIC_NAME='video-stream'
