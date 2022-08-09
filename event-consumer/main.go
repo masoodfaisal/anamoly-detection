@@ -63,7 +63,7 @@ func main() {
 			}()
 		case kafka.Error:
 			fmt.Fprintf(os.Stderr, "%% Error: %v\n", e)
-			run = false
+			run = true
 		default:
 			//fmt.Printf("Ignored %v\n", e)
 		}

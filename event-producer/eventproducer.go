@@ -14,13 +14,13 @@ var topic = "video-stream"
 
 func initKafka() (*kafka.Producer, string, error) {
 	hostname, err := os.Hostname()
-	var kafkabroker = os.Getenv("KAFKA_BROKER")
+	var kafkabroker = os.Getenv("KAFKA_BROKER_URL")
 	if kafkabroker == "" {
 		kafkabroker = "localhost:9092"
 	}
 
-	sasalusername := os.Getenv("SASL_USERNAME")
-	salpassword := os.Getenv("SASL_PASSWORD")
+	sasalusername := os.Getenv("CLIENT_ID")
+	salpassword := os.Getenv("CLIENT_SECRET")
 
 	//p, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": kafkabroker,
 	//	"client.id": hostname,

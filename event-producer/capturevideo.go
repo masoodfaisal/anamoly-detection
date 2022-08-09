@@ -19,6 +19,7 @@ var newsize = &image.Point{256, 256}
 func FetchImages(ch chan<- gocv.NativeByteBuffer) {
 	log.Println("Init Video Capture")
 	webcam, err = gocv.VideoCaptureDevice(0)
+
 	log.Println("VC Call completed")
 	log.Println(err)
 	if err != nil {
