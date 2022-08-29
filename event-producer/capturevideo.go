@@ -48,7 +48,7 @@ func processframes(ch chan<- gocv.NativeByteBuffer) {
 		}
 
 		skipcounter++
-		if skipcounter%5 != 0 {
+		if skipcounter%30 != 0 {
 			//log.Println(" VDO Captur eloop .. Skip Counter ... miss 5 frames")
 			continue
 		}

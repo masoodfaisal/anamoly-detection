@@ -3,16 +3,18 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<script>
-    const minio_location = 'http://minio-ml-workshop-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com/image-prediction/'
+<script >
+    var minio_location = ""
     var midfinger = 0
     var background = 0
     var person = 0
+
+    function start(){
+        minio_location = $('#minioserver').val()
+        setInterval(fetchData, 1000);
+    }
+
     function fetchData(){
-        $.ajax({
-            url: minio_location +  'MidFinger.txt',
-            dataType: 'text',
-        }).done(successFunctionOne);
         $.ajax({
             url: minio_location +  'Person.txt',
             dataType: 'text',
@@ -52,9 +54,20 @@
     }
 
 
-    setInterval(fetchData, 500);
+
 </script>
+<!--$.ajax({-->
+<!--url: minio_location +  'MidFinger.txt',-->
+<!--dataType: 'text',-->
+<!--}).done(successFunctionOne);-->
+
 <style>
+    #minioserverdiv{
+
+        margin: 0 auto;
+        text-align: center;
+
+    }
 
     * {
         box-sizing: border-box;
@@ -139,6 +152,10 @@
             <h6>Background</h6>
         </div>
     </div>
+</div>
+<div id="minioserverdiv">
+    <input id="minioserver" type="text" value="Type Minio Address Here" />
+    <input type="button" value="Start Fetching" onclick="start()">
 </div>
 </body>
 

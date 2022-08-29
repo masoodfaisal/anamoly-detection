@@ -17,10 +17,10 @@ import (
 	"time"
 )
 
-func RecordClassification(img gocv.Mat, classification string) {
+func RecordClassification(classification string) {
 
 	//publishToPrometheus(img, classification)
-	publishToS3(img, classification)
+	publishToS3(classification)
 
 }
 
@@ -28,7 +28,7 @@ var background_count_s3 int32 = 0
 var person_count_s3 int32 = 0
 var midfinger_count_s3 int32 = 0
 
-func publishToS3(img gocv.Mat, classification string) {
+func publishToS3(classification string) {
 	endpoint := os.Getenv("MINIO_SERVER")
 	accessKeyID := os.Getenv("MINIO_USER")
 	secretAccessKey := os.Getenv("MINIO_PASSWORD")

@@ -11,6 +11,8 @@ brew install jq
 KAFKA_NAME='fm-rocks-v3'
 TOPIC_NAME='video-stream'
 
+ocm login --user --password
+
 rhoas login
 
 export RHOAS_TELEMETRY=true

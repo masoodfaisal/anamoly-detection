@@ -35,11 +35,12 @@ func main() {
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": kafkabroker,
 		"group.id":          groupid,
-		"auto.offset.reset": "earliest",
+		"auto.offset.reset": "latest",
 		"sasl.mechanism":    "PLAIN",
 		"security.protocol": "SASL_SSL",
 		"sasl.username":     sasalusername,
-		"sasl.password":     salpassword})
+		"sasl.password":     salpassword,
+	})
 
 	if err != nil {
 		fmt.Printf("Exitting .. Failed to creare consumer: %s\n", err)
