@@ -2,18 +2,19 @@ const { Kafka } = require('kafkajs')
 const http = require("http");
 const { CompressionTypes } = require('kafkajs')
 
-// This creates a client instance that is configured to connect to the Kafka broker provided by
-// the environment variable KAFKA_BOOTSTRAP_SERVER
+console.log(process.env.KAFKA_BROKER_URL)
+
 const kafka = new Kafka({
-  clientId: 'qa-topic',
-  brokers: ['localhost:9092'],
-  ssl: false,
-  logLevel: 2
-//  sasl: {
-//    mechanism: 'plain',
-//    username: 'admin',
-//    password: 'password'
-//  }
+  clientId: 'video-topic',
+  // brokers: ['localhost:9092'],
+    brokers: [process.env.KAFKA_BROKER_URL],
+  ssl: true,
+  logLevel: 2,
+ sasl: {
+   mechanism: 'plain',
+   username: process.env.SASL_USERNAME,
+   password: process.env.SASL_PASSWORD
+ }
 })
 
 

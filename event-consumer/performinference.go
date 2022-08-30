@@ -82,7 +82,7 @@ func PerformInference(imagedata []byte) {
 
 }
 
-func PerformInferenceRemove(imagedata []byte) {
+func PerformInferenceFaster(imagedata []byte) {
 	println("\nInferencing ....")
 	//todo merge into one - not production ready
 	var imagedataforinference []byte
@@ -114,7 +114,7 @@ func PerformInferenceRemove(imagedata []byte) {
 	}
 
 	sp := newSeldonpayload(&Data{Names: []string{"image"}, Ndarray: imgarray})
-	classification, err := postpayload(sp)
+	classification, _ := postpayload(sp)
 	go RecordClassification(classification)
 
 }
