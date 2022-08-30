@@ -50,7 +50,7 @@ type seldonpayload struct {
 
 func PerformInference(imagedata []byte) {
 	println("\nInferencing ....")
-
+	//todo merge into one - not production ready
 	unzippeddata, err := io.ReadAll(bytes.NewReader([]byte(imagedata)))
 	if err != nil {
 		fmt.Printf("Error in reading the decompressed byte array ... Ignoring..... %s\n", err)
@@ -81,6 +81,44 @@ func PerformInference(imagedata []byte) {
 	go RecordClassification(classification)
 
 }
+
+func PerformInferenceRemove(imagedata []byte) {
+	println("\nInferencing ....")
+	//todo merge into one - not production ready
+	var imagedataforinference []byte
+	base64.StdEncoding.Decode(imagedataforinference, imagedata)
+
+	/*	unzippeddata, err := io.ReadAll(bytes.NewReader([]byte(imagedata)))
+		if err != nil {
+			fmt.Printf("Error in reading the decompressed byte array ... Ignoring..... %s\n", err)
+			return
+		}
+		imagedataforinference, err := base64.StdEncoding.DecodeString(string(unzippeddata))
+		if err != nil {
+			fmt.Printf("Error in decoding the base6 array ... Ignoring..... %s\n", err)
+			return
+		}
+	*/
+	singedimarray := strings.Split(string(imagedataforinference), ",")
+	const imagewidth = 255 * 4
+	var imgarray [256][256][3]uint8
+	for i := 0; i < 256; i++ {
+		for j := 0; j < 256; j++ {
+			firstitem := (i * (imagewidth)) + (j * 4)
+			//imageData.data[( (50 * (imageData.width * 4) ) + (200 * 4)) + 2];
+
+			imgarray[i][j][0] = str2int(singedimarray[firstitem])
+			imgarray[i][j][1] = str2int(singedimarray[firstitem+1])
+			imgarray[i][j][2] = str2int(singedimarray[firstitem+2])
+		}
+	}
+
+	sp := newSeldonpayload(&Data{Names: []string{"image"}, Ndarray: imgarray})
+	classification, err := postpayload(sp)
+	go RecordClassification(classification)
+
+}
+
 func str2int(str string) uint8 {
 	convertedint, err := strconv.Atoi(str)
 	if err != nil {
