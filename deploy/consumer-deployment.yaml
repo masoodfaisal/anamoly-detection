@@ -55,13 +55,13 @@ spec:
             - name: "GROUP_ID"
               value: "imageclassification"
             - name: "MINIO_SERVER"
-              value: "minio-ml-workshop-fmv3.apps.dbs-indo-1.apac-1.rht-labs.com"
+              value: "minio-ml-workshop:9000"
             - name: "PARALLEL_INFERENCE"
               value: "10"
             - name: "PROMETHEUS_SERVER"
               value: "NA"
             - name: "MODEL_URL"
-              value: ""
+              value: "http://model-1-pred-demo:8000/api/v1.0/predictions"
           imagePullPolicy: Always
           image: quay.io/ml-aml-workshop/image-prediction-consumer:0.1.1
       restartPolicy: Always
