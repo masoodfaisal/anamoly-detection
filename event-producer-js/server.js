@@ -17,10 +17,12 @@ const kafka = new Kafka({
  }
 })
 
+var isConnected = false
 
 const producer = kafka.producer()
 producer.on('producer.connect', () => {
   console.log(`KafkaProvider: connected`);
+  isConnected = true
 });
 producer.on('producer.disconnect', () => {
   console.log(`KafkaProvider: could not connect`);
@@ -48,6 +50,13 @@ const requestListener = async function (req, res) {
 		res.end();
 		return;
 	}
+
+    if (!isConnected){
+      console.log('message NOT posted becuase server is still connecting');
+      res.writeHead(200)
+      res.end();
+
+    }
 
 //    console.log(req)
     var body = "";
