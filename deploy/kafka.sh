@@ -1,5 +1,16 @@
 #!/bin/bash
 
+
+# Prior to running this script, you need to do the following
+# 1) Run this to download the Red Hat OpenShift Application Services (RHOAS) Command Line Interface (CLI)
+#    curl -o- https://raw.githubusercontent.com/redhat-developer/app-services-cli/main/scripts/install.sh | bash
+# 2) Export the location of the RHOAS CLI to your system PATH,
+#    e.g. on mac that's done as follows:
+#    export PATH=%PATH%:/Users/<INSERT YOUR USERNAME HERE>/bin
+# 3) Create a Red Hat Account - where the SaaS service, Red Hat OpenShift Service for Apache Kafka is located
+#    Do that here:
+#    http://console.redhat.com
+
 ## install rhoas from curl -o- https://raw.githubusercontent.com/redhat-developer/app-services-cli/main/scripts/install.sh | bash
 ## make sure you are logged into rhoas via 'rhoas
 
@@ -56,3 +67,15 @@ rhoas service-account list | grep "${KAFKA_NAME}-service-account"
 
 rhoas kafka acl grant-access --consumer --producer --service-account "${SASL_USERNAME}" --topic-prefix "${TOPIC_NAME}"  --group all -y
 
+#change the consumer deployment yaml file
+
+#sed -i "s/SASL_USERNAME_VALUE/${CLIENT_ID}/g" consumer-deployment.yaml
+#sed -i "s/SASL_PASSWORD_VALUE/${CLIENT_SECRET}/g" consumer-deployment.yaml
+#sed -i "s/KAFKA_BROKER_VALUE/${KAFKA_BROKER_URL}/g" consumer-deployment.yaml
+
+# Mac (sed has peculiarities - use gnu-sed)
+# run: brew install gnu-sed
+# see: https://blog.birost.com/a?ID=00900-c6ae76a9-d665-4d1a-9fa8-0f962b6385e6
+gsed -i "s/SASL_USERNAME_VALUE/${CLIENT_ID}/g" consumer-deployment.yaml
+gsed -i "s/SASL_PASSWORD_VALUE/${CLIENT_SECRET}/g" consumer-deployment.yaml
+gsed -i "s/KAFKA_BROKER_VALUE/${KAFKA_BROKER_URL}/g" consumer-deployment.yaml
