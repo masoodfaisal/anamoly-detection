@@ -30,7 +30,7 @@ do
   READY='ready'
 
   if [[ "$STATUS" == *"$PROV"* ]]; then
-    echo "Provisioing"
+    echo "Provisioning"
   elif [[ "$STATUS" == *"$READY"* ]]; then
     echo "Ready"
     break
