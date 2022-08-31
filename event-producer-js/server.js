@@ -52,7 +52,7 @@ const requestListener = async function (req, res) {
 	}
 
     if (!isConnected){
-      console.log('message NOT posted becuase server is still connecting');
+      console.log('message NOT posted becuase server is still connecting ' + new Date());
       res.writeHead(200)
       res.end();
 
@@ -76,7 +76,7 @@ const requestListener = async function (req, res) {
           },
         ],
       });
-              console.log('message posted');
+              console.log('message posted at ' + new Date());
       res.writeHead(200)
       res.end();
 
